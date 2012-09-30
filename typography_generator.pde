@@ -1,83 +1,134 @@
 import geomerative.*;
+import controlP5.*;
 
-int segLen = 6;
+
+int roughness = 1;
+float scalar = 1.0;
 int fontSize = 200;
 int xSpacing = 20;
 int yOffset = 0;
 color fillColor = color ( 0 );
 color strokeColor = color ( 0 );
 
+int margin = 100;
+
+ControlP5 controlP5;
+int sliderWidth = 100;
+int sliderHeight = 15;
+int sliderSpacer = 20;
+int controlmargT = 50;
+
+
 void setup() {
   size( 1280, 800 );
   background( 255 );
   smooth();
+  
+  RG.init( this );
+  
+  controlP5 = new ControlP5( this) ;
+  ControlWindow cw = controlP5.addControlWindow( "win", 250, 250 ) ;
+  cw.setLocation( 10,10) ;
+  ControlGroup cg = controlP5.addGroup( "Adjustments", 30, 30 );
+  cg.moveTo( cw );
+  controlP5.begin( cg, 10, 10 );
+  Slider roughness = controlP5.addSlider( "roughness", 1, 12 );
+  roughness.setNumberOfTickMarks(11);
+  roughness.showTickMarks(false);
+  roughness.linebreak();
+  Slider scalar = controlP5.addSlider( "scalar", 0, 2 );
+  controlP5.end();
+  
+}
+
+void draw() {
+  background(255);
   fill( fillColor );
   stroke( strokeColor );
   
-  // initialize the geomerative library
-  RG.init( this );
-  
-  translate( 100, height/2 );
+  RFont font = new RFont( "FreeSans.ttf", fontSize, RFont.LEFT );
+  RCommand.setSegmentLength( roughness );
+  RGroup grp; 
+  RGroup pGrp;
 
   String textString = "Hi there";
   String[] letterArray = textString.split("");
+  
+  translate( margin, height/3 * 2 );
 
   for ( int c = 1; c < letterArray.length; c++ ) {
     String letter = letterArray[c];
     String prevLetter = letterArray[c - 1];
-    if( letter.contentEquals(" ") ) {
+    if ( letter.contentEquals(" ") ) {
       letter = "a";
       noFill();
       noStroke();
-      drawShape( letter, prevLetter );
-      fill( fillColor );
-      stroke( strokeColor );
-    } else if( prevLetter.contentEquals(" ") ) {
-      prevLetter = "..";
-      drawShape( letter, prevLetter );
-      fill( fillColor );
-      stroke( strokeColor );
-    } else if( c == 1 ){
-      prevLetter = "a";
-      drawShape(letter, prevLetter);          
-    }  else {
-     drawShape(letter, prevLetter);
-    }        
-  }
-}
-
-void draw() {
-  
-}
-
-void drawShape(String l, String pl) {
-      println("drawing shape" );
-      String letter = l;
-      String prevLetter = pl;
-      RFont font = new RFont( "FreeSans.ttf", fontSize, RFont.LEFT );
-
-      // tell library we want 11px between each point on the font path
-      RCommand.setSegmentLength(segLen);
-
-      RGroup grp; 
-      RGroup pGrp;
       grp = font.toGroup( letter ) ;
       pGrp = font.toGroup( prevLetter );
       RPoint[] pnts = grp.getPoints();
       translate( pGrp.getWidth() + xSpacing, yOffset );
-      
-      font.draw( letter );
-//  
-//      beginShape();
-//      vertex( pnts[0].x, pnts[0].y );
-//      for ( int i = 1; i < pnts.length; i++ ) {
-//        curveVertex( pnts[i].x, pnts[i].y );
-//      }
-//      endShape(CLOSE); 
+      beginShape();
+      //vertex( pnts[0].x, pnts[0].y );
+      for ( int i = 1; i < pnts.length; i++ ) {
+        pnts[i].scale( scalar );  
+        curveVertex( pnts[i].x, pnts[i].y );
+        }
+      endShape(CLOSE);
+      fill( fillColor );
+      stroke( strokeColor );
+    } 
+    else if ( prevLetter.contentEquals(" ") ) {
+      prevLetter = "..";
+      grp = font.toGroup( letter ) ;
+      pGrp = font.toGroup( prevLetter );
+      RPoint[] pnts = grp.getPoints();
+      translate( pGrp.getWidth() + xSpacing, yOffset );
+      beginShape();
+      //vertex( pnts[0].x, pnts[0].y );
+      for ( int i = 1; i < pnts.length; i++ ) {
+          pnts[i].scale( scalar );
+          curveVertex( pnts[i].x, pnts[i].y );
+        }
+      endShape(CLOSE);
+    } 
+    else if ( c == 1 ) {
+      prevLetter = "a";
+      grp = font.toGroup( letter ) ;
+      pGrp = font.toGroup( prevLetter );
+      RPoint[] pnts = grp.getPoints();
+      translate( pGrp.getWidth() + xSpacing, yOffset );
+      beginShape();
+     // vertex( pnts[0].x, pnts[0].y );
+      for ( int i = 1; i < pnts.length; i++ ) {
+          pnts[i].scale( scalar );
+          curveVertex( pnts[i].x, pnts[i].y );
+        }
+      endShape(CLOSE);
+    }  
+    else {
+      grp = font.toGroup( letter ) ;
+      pGrp = font.toGroup( prevLetter );
+      RPoint[] pnts = grp.getPoints();
+      translate( pGrp.getWidth() + xSpacing, yOffset ); 
+      beginShape();
+      //vertex( pnts[0].x, pnts[0].y );
+      for ( int i = 0; i < pnts.length; i++ ) {
+          pnts[i].scale( scalar );
+          curveVertex( pnts[i].x, pnts[i].y );
+        }
+      endShape(CLOSE);
+    }
+  }
+  
 }
 
-void mouseReleased() {
-  fillColor = color( random( 0, 255 ), random( 0, 255 ), random( 0, 255 ) );
-  strokeColor = fillColor;
-  setup();
-}
+  
+  
+
+
+//void roughness( int v ) { 
+//  roughness = v; 
+//}
+
+
+
