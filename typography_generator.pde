@@ -37,6 +37,9 @@ void setup() {
   roughness.showTickMarks(false);
   roughness.linebreak();
   Slider scalar = controlP5.addSlider( "scalar", 0, 2 );
+  scalar.linebreak();
+  Slider xSpacing = controlP5.addSlider( "xSpacing", 0, 100 );
+  xSpacing.setValue( 20 );
   controlP5.end();
   
 }
