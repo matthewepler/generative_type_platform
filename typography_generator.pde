@@ -8,7 +8,7 @@ int fontSize = 200;
 int xSpacing = 20;
 int yOffset = 0;
 color fillColor = color ( 0 );
-color strokeColor = color ( 0 );
+color strokeColor = color ( 255, 0, 0 );
 
 int margin = 100;
 
@@ -17,6 +17,8 @@ int sliderWidth = 100;
 int sliderHeight = 15;
 int sliderSpacer = 20;
 int controlmargT = 50;
+int stroke_on = 1;
+int fill_on = 1;
 
 
 void setup() {
@@ -40,14 +42,17 @@ void setup() {
   scalar.linebreak();
   Slider xSpacing = controlP5.addSlider( "xSpacing", 0, 100 );
   xSpacing.setValue( 20 );
+  xSpacing.linebreak();
+  controlP5.addToggle( "stroke_on" );
+  controlP5.addToggle( "fill_on" );
   controlP5.end();
   
 }
 
 void draw() {
   background(255);
-  fill( fillColor );
-  stroke( strokeColor );
+  if( fill_on == 1 ) {fill( fillColor ); }
+  if( stroke_on == 1 ) { stroke( strokeColor ); }
   
   RFont font = new RFont( "FreeSans.ttf", fontSize, RFont.LEFT );
   RCommand.setSegmentLength( roughness );
@@ -77,8 +82,8 @@ void draw() {
         curveVertex( pnts[i].x, pnts[i].y );
         }
       endShape(CLOSE);
-      fill( fillColor );
-      stroke( strokeColor );
+      if( fill_on == 1 ) {fill( fillColor ); }
+      if( stroke_on == 1 ) { stroke( strokeColor ); }
     } 
     else if ( prevLetter.contentEquals(" ") ) {
       prevLetter = "..";
