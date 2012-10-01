@@ -198,13 +198,13 @@ void set(int v) {
   
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SAVE_FRAME~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-void ssave_tiff( int v ) {
+void save_tiff( int v ) {
   println("I SEE YOU");
     save_tiff = v;
     if( save_tiff == 1 ) {
       PImage printFrame = get();
       image( printFrame, 0, 0 );
-      save( "output.tif" );
+      save( "outputA.tif" );
       save_tiff = 0;
       println( "Saved!" );
     } else {
