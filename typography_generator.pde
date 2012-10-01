@@ -24,7 +24,7 @@ int sliderSpacer = 20;
 int controlmargT = 50;
 int stroke_on = 1;
 int fill_on = 1;
-int margin = 100;
+int margin = 50;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~COLORS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -204,7 +204,7 @@ void save_tiff( int v ) {
     if( save_tiff == 1 ) {
       PImage printFrame = get();
       image( printFrame, 0, 0 );
-      save( "outputA.tif" );
+      save( "outputE.tif" );
       save_tiff = 0;
       println( "Saved!" );
     } else {
