@@ -10,8 +10,9 @@ int xSpacing = 20;
 int yOffset = 0;
 float scatter = 0;
 color fillColor = color ( 255 );
-color strokeColor = color ( 255, 0, 0 );
+color strokeColor = color ( 0 );
 color backgroundColor = color( 100 );
+color drawColor = color( 100 );
 
 PImage frameGrab;
 
@@ -172,7 +173,7 @@ void draw() {
   } 
   else if( setFrame == 1 ){
      pushMatrix();
-       stroke( backgroundColor );
+       stroke( drawColor );
        PVector one = new PVector( random( -15, 15 ), random( -15, 15 ) );
        PVector two = new PVector( random( -15, 15 ), random( -15, 15 ) );
        translate( mouseX, mouseY );
